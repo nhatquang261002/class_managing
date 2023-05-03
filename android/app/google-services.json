@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "7447787215",
+    "project_id": "study-grading",
+    "storage_bucket": "study-grading.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:7447787215:android:d9524dd3805fa1913229ba",
+        "android_client_info": {
+          "package_name": "com.example.study_work_grading_web_based"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "7447787215-275nqk6egp1f42efqr8srl33bi7ta16j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDk_EjATSQvtCdye7kTv17LWv2WtS8A55Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "7447787215-275nqk6egp1f42efqr8srl33bi7ta16j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
