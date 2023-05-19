@@ -48,6 +48,8 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         ),
       ),
+
+      // register form at the center
       body: Center(
         child: Material(
           elevation: 10,
@@ -72,6 +74,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       'Enter your information here',
                       style: TextStyle(fontWeight: FontWeight.w600),
                     ),
+
+                    // name line
                     SizedBox(
                       width: 350,
                       child: TextFormField(
@@ -88,6 +92,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         },
                       ),
                     ),
+
+                    // id line
                     SizedBox(
                       width: 350,
                       child: TextFormField(
@@ -104,6 +110,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         },
                       ),
                     ),
+
+                    // email line
                     SizedBox(
                       width: 350,
                       child: TextFormField(
@@ -124,6 +132,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         },
                       ),
                     ),
+
+                    // password line
                     SizedBox(
                       width: 350,
                       child: TextFormField(
@@ -141,6 +151,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         },
                       ),
                     ),
+
+                    // confirm password line
                     SizedBox(
                       width: 350,
                       child: TextFormField(
@@ -161,6 +173,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     const SizedBox(
                       height: 10,
                     ),
+
+                    // teacher checkbox
                     SizedBox(
                       width: 200,
                       child: CheckboxListTile(
@@ -179,6 +193,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        // login line button
                         TextButton(
                             onPressed: () {
                               Navigator.pop(context);
@@ -189,6 +204,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                 color: Color.fromARGB(192, 235, 83, 72),
                               ),
                             )),
+
+                        // register button
                         OutlinedButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate() == true) {

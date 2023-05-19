@@ -6,41 +6,36 @@ import 'package:study_work_grading_web_based/models/class.dart';
 import 'package:study_work_grading_web_based/models/user.dart';
 
 class Group {
-  final int groupID;
-  final Class groupClass;
-  List<String> groupUsers = [];
-  Group({
-    required this.groupID,
-    required this.groupClass,
-    required this.groupUsers,
-  });
+  final String groupName;
+  Map<String, bool> students;
+
+  Group(
+    this.groupName,
+    this.students,
+  );
 
   Group copyWith({
-    int? groupID,
-    Class? groupClass,
-    List<String>? groupUsers,
+    String? groupName,
+    Map<String, bool>? students,
   }) {
     return Group(
-      groupID: groupID ?? this.groupID,
-      groupClass: groupClass ?? this.groupClass,
-      groupUsers: groupUsers ?? this.groupUsers,
+      groupName ?? this.groupName,
+      students ?? this.students,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'groupID': groupID,
-      'groupClass': groupClass.toMap(),
-      'groupUsers': groupUsers,
+      'groupName': groupName,
+      'students': students,
     };
   }
 
   factory Group.fromMap(Map<String, dynamic> map) {
     return Group(
-        groupID: map['groupID'] as int,
-        groupClass: Class.fromMap(map['groupClass'] as Map<String, dynamic>),
-        groupUsers: List<String>.from(
-          (map['groupUsers'] as List<String>),
+        map['groupName'] as String,
+        Map<String, bool>.from(
+          (map['students'] as Map<String, bool>),
         ));
   }
 
@@ -50,20 +45,16 @@ class Group {
       Group.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() =>
-      'Group(groupID: $groupID, groupClass: $groupClass, groupUsers: $groupUsers)';
+  String toString() => 'Group(groupName: $groupName, students: $students)';
 
   @override
   bool operator ==(covariant Group other) {
     if (identical(this, other)) return true;
-    final listEquals = const DeepCollectionEquality().equals;
+    final mapEquals = const DeepCollectionEquality().equals;
 
-    return other.groupID == groupID &&
-        other.groupClass == groupClass &&
-        listEquals(other.groupUsers, groupUsers);
+    return other.groupName == groupName && mapEquals(other.students, students);
   }
 
   @override
-  int get hashCode =>
-      groupID.hashCode ^ groupClass.hashCode ^ groupUsers.hashCode;
+  int get hashCode => groupName.hashCode ^ students.hashCode;
 }

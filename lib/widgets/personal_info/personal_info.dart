@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../models/user.dart';
 import '../../services/database_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -26,6 +25,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
         const SizedBox(
           height: 10.0,
         ),
+
+        // get the personal info
         Padding(
           padding: const EdgeInsets.all(25.0),
           child: FutureBuilder(

@@ -1,29 +1,26 @@
-import 'package:flutter/material.dart';
-import 'package:study_work_grading_web_based/services/auth_service.dart';
-import 'package:provider/provider.dart';
-import 'package:study_work_grading_web_based/services/database_service.dart';
-import 'package:study_work_grading_web_based/widgets/classes/classes.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:study_work_grading_web_based/services/auth_service.dart';
+import 'package:study_work_grading_web_based/widgets/classes/classes.dart';
+import 'package:study_work_grading_web_based/widgets/scoring/scoring_home.dart';
 import '../models/user.dart';
-import '../widgets/home_page/personal_info.dart';
+import '../widgets/personal_info/personal_info.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  int selectedWidget;
+  HomePage({
+    Key? key,
+    required this.selectedWidget,
+  }) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  int selectedWidget = 0;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -31,6 +28,7 @@ class _HomePageState extends State<HomePage> {
       body: CustomScrollView(
         shrinkWrap: true,
         slivers: [
+          // App Bar
           SliverAppBar(
             backgroundColor: Theme.of(context).primaryColor,
             pinned: true,
@@ -45,9 +43,12 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             actions: [
+              // if loginState = true => LoginButton, else is Welcome 'User' + LogOutButton
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: context.watch<AuthService>().loginState == false
+
+                    // Login State == true
                     ? OutlinedButton.icon(
                         onPressed: () {
                           Navigator.pushNamed(context, '/login');
@@ -60,7 +61,10 @@ class _HomePageState extends State<HomePage> {
                           'Login',
                           style: TextStyle(color: Colors.white),
                         ))
+
+                    // LoginState == false
                     : Row(children: [
+                        // Fetch user name for the Welcome 'User'
                         FutureBuilder(
                             future: FirebaseFirestore.instance
                                 .collection('users')
@@ -87,6 +91,8 @@ class _HomePageState extends State<HomePage> {
                         const SizedBox(
                           width: 5,
                         ),
+
+                        // logOut Button
                         OutlinedButton.icon(
                             onPressed: () {
                               context.read<AuthService>().logout();
@@ -103,25 +109,30 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
+
+          // body of the mainPage
+          // if loginState is false => HUST image, else => homePage
           SliverToBoxAdapter(
             child: context.watch<AuthService>().loginState == false
-                ? Stack(
-                    children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height,
-                        child: Image.asset(
-                          'hust_background.jpg',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ],
+
+                // image from assets
+                ? SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: Image.asset(
+                      'hust_background.jpg',
+                      fit: BoxFit.cover,
+                    ),
                   )
+
+                // homePage body
                 : Padding(
                     padding: const EdgeInsets.all(25.0),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        // The left red menu
+                        // if the  screen width < 800 then it'll dissapear
                         size.width < 800
                             ? Container()
                             : SizedBox(
@@ -136,6 +147,7 @@ class _HomePageState extends State<HomePage> {
                                         CrossAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
+                                      // The user name line
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: FutureBuilder(
@@ -166,10 +178,12 @@ class _HomePageState extends State<HomePage> {
                                           },
                                         ),
                                       ),
+
+                                      // personal info button
                                       TextButton.icon(
                                         onPressed: () {
                                           setState(() {
-                                            selectedWidget = 0;
+                                            widget.selectedWidget = 0;
                                           });
                                         },
                                         icon: const Icon(
@@ -189,10 +203,12 @@ class _HomePageState extends State<HomePage> {
                                           color: Colors.white,
                                         ),
                                       ),
+
+                                      // classes button
                                       TextButton.icon(
                                         onPressed: () {
                                           setState(() {
-                                            selectedWidget = 1;
+                                            widget.selectedWidget = 1;
                                           });
                                         },
                                         icon: const Icon(
@@ -212,6 +228,31 @@ class _HomePageState extends State<HomePage> {
                                           color: Colors.white,
                                         ),
                                       ),
+
+                                      // scoring button
+                                      TextButton.icon(
+                                        onPressed: () {
+                                          setState(() {
+                                            widget.selectedWidget = 2;
+                                          });
+                                        },
+                                        icon: const Icon(
+                                          Icons.arrow_right,
+                                          color: Colors.white,
+                                        ),
+                                        label: const Text(
+                                          'Scoring',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Container(
+                                          height: 2,
+                                          width: size.width * 0.19,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -219,6 +260,8 @@ class _HomePageState extends State<HomePage> {
                         const SizedBox(
                           width: 20,
                         ),
+
+                        // the white right part
                         SizedBox(
                           height: size.height * 0.8,
                           width: size.width * 0.7,
@@ -227,12 +270,15 @@ class _HomePageState extends State<HomePage> {
                             borderRadius: BorderRadius.circular(12.0),
                             child: Column(
                               children: [
+                                // if personalInfo button is pressed, change the widget to PersonalInfo
                                 Visibility(
-                                  visible: selectedWidget == 0,
+                                  visible: widget.selectedWidget == 0,
                                   child: const PersonalInfo(),
                                 ),
+
+                                // if classes button is pressed, change the widget to Classes
                                 Visibility(
-                                  visible: selectedWidget == 1,
+                                  visible: widget.selectedWidget == 1,
                                   child: FutureBuilder(
                                       future: FirebaseFirestore.instance
                                           .collection('users')
@@ -254,7 +300,12 @@ class _HomePageState extends State<HomePage> {
                                               snapshot.data!['isTeacher'],
                                         );
                                       }),
-                                )
+                                ),
+
+                                // if the scoring button is pressed, change the widget to scoring home
+                                Visibility(
+                                    visible: widget.selectedWidget == 2,
+                                    child: const ScoringHome()),
                               ],
                             ),
                           ),

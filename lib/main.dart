@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:study_work_grading_web_based/pages/class_detail_page.dart';
 import 'package:study_work_grading_web_based/pages/login_page.dart';
 import 'package:study_work_grading_web_based/pages/register_page.dart';
 import 'package:study_work_grading_web_based/services/auth_service.dart';
@@ -31,7 +30,9 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         initialRoute: '/',
         routes: {
-          '/': (context) => const HomePage(),
+          '/': (context) => HomePage(
+                selectedWidget: 0,
+              ),
           '/login': (context) => const LoginPage(),
           '/register': (context) => const RegisterPage(),
         },

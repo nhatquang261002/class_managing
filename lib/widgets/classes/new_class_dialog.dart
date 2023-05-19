@@ -1,7 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:study_work_grading_web_based/models/class.dart';
 import 'package:study_work_grading_web_based/services/database_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class NewClassDialog extends StatefulWidget {
   const NewClassDialog({Key? key}) : super(key: key);
@@ -33,6 +33,8 @@ class _NewClassDialogState extends State<NewClassDialog> {
           children: [
             SizedBox(
               width: size.width * 0.25,
+
+              // 'subject's name' line
               child: TextFormField(
                 controller: _subjectNameController,
                 decoration: InputDecoration(
@@ -61,6 +63,8 @@ class _NewClassDialogState extends State<NewClassDialog> {
             const SizedBox(
               height: 10,
             ),
+
+            // classID line
             SizedBox(
               width: size.width * 0.25,
               child: TextFormField(
@@ -94,6 +98,7 @@ class _NewClassDialogState extends State<NewClassDialog> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                // 'add class' button
                 TextButton.icon(
                   onPressed: () {
                     final teacherEmail =

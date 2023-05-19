@@ -1,21 +1,21 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:study_work_grading_web_based/models/user.dart';
 import 'package:study_work_grading_web_based/services/database_service.dart';
 
-class AddStudentDialog extends StatefulWidget {
+class AddStudentToClassDialog extends StatefulWidget {
   final int classID;
-  const AddStudentDialog({
+  const AddStudentToClassDialog({
     Key? key,
     required this.classID,
   }) : super(key: key);
 
   @override
-  _AddStudentDialogState createState() => _AddStudentDialogState();
+  _AddStudentToClassDialogState createState() =>
+      _AddStudentToClassDialogState();
 }
 
-class _AddStudentDialogState extends State<AddStudentDialog> {
+class _AddStudentToClassDialogState extends State<AddStudentToClassDialog> {
   final _studentIDController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -27,6 +27,7 @@ class _AddStudentDialogState extends State<AddStudentDialog> {
 
   @override
   Widget build(BuildContext context) {
+    // dialog
     return AlertDialog(
       content: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -35,6 +36,8 @@ class _AddStudentDialogState extends State<AddStudentDialog> {
           children: [
             Form(
               key: _formKey,
+
+              // studentID line
               child: TextFormField(
                   controller: _studentIDController,
                   decoration: InputDecoration(
@@ -52,20 +55,22 @@ class _AddStudentDialogState extends State<AddStudentDialog> {
                     ),
                   ),
                   validator: (value) {
-                    if (RegExp(r'(\d{6})').hasMatch(value!)) {
+                    if (RegExp(r'(\d{8})').hasMatch(value!)) {
                       return null;
                     } else {
-                      return 'Incorrect Student ID';
+                      return "ID is incorrect";
                     }
                   }),
             ),
             const SizedBox(
               height: 5,
             ),
+
+            // 'add student' button
             OutlinedButton(
               onPressed: () async {
                 if (_formKey.currentState!.validate() == true) {
-                  await DatabaseService().addStudent(
+                  await DatabaseService().addStudentToClass(
                       _studentIDController.text, widget.classID, context);
                 }
               },

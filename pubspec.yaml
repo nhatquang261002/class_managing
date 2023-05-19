@@ -41,8 +41,9 @@ dev_dependencies:
     sdk: flutter
   firebase_auth:
   firebase_core:
-  provider:
   cloud_firestore:
+  provider:
+
 
 
   # The "flutter_lints" package below contains a set of recommended lints to

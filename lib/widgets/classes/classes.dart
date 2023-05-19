@@ -21,6 +21,7 @@ class _ClassesState extends State<Classes> {
   final _searchController = TextEditingController();
   bool isCreator = false;
 
+  // check if the user is the creator
   Future checkCreator(int classID) async {
     final doc = await FirebaseFirestore.instance
         .collection('classes')
@@ -56,6 +57,8 @@ class _ClassesState extends State<Classes> {
               SizedBox(
                 width: size.width * 0.4,
                 height: 50,
+
+                // the search bar
                 child: Center(
                   child: TextField(
                     controller: _searchController,
@@ -81,6 +84,8 @@ class _ClassesState extends State<Classes> {
               const SizedBox(
                 width: 10,
               ),
+
+              // if the user is a teacher, appear the create new class button
               widget.isTeacher
                   ? SizedBox(
                       width: size.width * 0.15,
@@ -110,6 +115,8 @@ class _ClassesState extends State<Classes> {
           const SizedBox(
             height: 10,
           ),
+
+          // the classes table
           SingleChildScrollView(
             child: SizedBox(
               height: size.height * 0.6,

@@ -8,14 +8,14 @@ class UserModel {
   final String email;
   final bool isTeacher;
   final int id;
-  List<String> classGroups = [];
+  Map<String, Map<String, bool>> classAndGroup;
 
   UserModel({
     required this.name,
     required this.email,
     required this.isTeacher,
-    required this.classGroups,
     required this.id,
+    required this.classAndGroup,
   });
 
   UserModel copyWith({
@@ -23,14 +23,14 @@ class UserModel {
     String? email,
     bool? isTeacher,
     int? id,
-    List<String>? classGroups,
+    Map<String, Map<String, bool>>? classAndGroup,
   }) {
     return UserModel(
       name: name ?? this.name,
       email: email ?? this.email,
       isTeacher: isTeacher ?? this.isTeacher,
       id: id ?? this.id,
-      classGroups: classGroups ?? this.classGroups,
+      classAndGroup: classAndGroup ?? this.classAndGroup,
     );
   }
 
@@ -39,8 +39,8 @@ class UserModel {
       'name': name,
       'email': email,
       'isTeacher': isTeacher,
-      'classGroups': classGroups,
       'id': id,
+      'classAndGroup': classAndGroup,
     };
   }
 
@@ -50,8 +50,8 @@ class UserModel {
         email: map['email'] as String,
         isTeacher: map['isTeacher'] as bool,
         id: map['id'] as int,
-        classGroups: List<String>.from(
-          (map['classGroups'] as List<String>),
+        classAndGroup: Map<String, Map<String, bool>>.from(
+          (map['classAndGroup'] as Map<String, Map<String, bool>>),
         ));
   }
 
@@ -62,19 +62,19 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(name: $name, email: $email, isTeacher: $isTeacher, classGroups: $classGroups, id: $id)';
+    return 'UserModel(name: $name, email: $email, isTeacher: $isTeacher, id: $id, classAndGroup: $classAndGroup)';
   }
 
   @override
   bool operator ==(covariant UserModel other) {
     if (identical(this, other)) return true;
-    final listEquals = const DeepCollectionEquality().equals;
+    final mapEquals = const DeepCollectionEquality().equals;
 
     return other.name == name &&
         other.email == email &&
         other.isTeacher == isTeacher &&
-        listEquals(other.classGroups, classGroups) &&
-        other.id == id;
+        other.id == id &&
+        mapEquals(other.classAndGroup, classAndGroup);
   }
 
   @override
@@ -82,7 +82,7 @@ class UserModel {
     return name.hashCode ^
         email.hashCode ^
         isTeacher.hashCode ^
-        classGroups.hashCode ^
-        id.hashCode;
+        id.hashCode ^
+        classAndGroup.hashCode;
   }
 }

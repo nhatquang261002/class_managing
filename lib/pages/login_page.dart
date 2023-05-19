@@ -40,6 +40,8 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
+
+      // the Form at the center
       body: Center(
         child: Material(
           elevation: 10,
@@ -72,6 +74,8 @@ class _LoginPageState extends State<LoginPage> {
                       'Enter your information here',
                       style: TextStyle(fontWeight: FontWeight.w600),
                     ),
+
+                    // email line
                     SizedBox(
                       width: 350,
                       child: TextFormField(
@@ -92,6 +96,8 @@ class _LoginPageState extends State<LoginPage> {
                         },
                       ),
                     ),
+
+                    // password line
                     SizedBox(
                       width: 350,
                       child: TextFormField(
@@ -112,6 +118,8 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(
                       height: 20,
                     ),
+
+                    // register line button
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -125,6 +133,8 @@ class _LoginPageState extends State<LoginPage> {
                                 color: Color.fromARGB(192, 235, 83, 72),
                               ),
                             )),
+
+                        // login button
                         OutlinedButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate() == true) {

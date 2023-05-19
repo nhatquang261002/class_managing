@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +8,8 @@ import '../models/user.dart';
 class AuthService extends ChangeNotifier {
   bool _login = false;
   bool get loginState => _login;
+
+  // login
   Future login(String email, String password, BuildContext context) async {
     showDialog(
         context: context,
@@ -59,6 +59,7 @@ class AuthService extends ChangeNotifier {
     });
   }
 
+  // register
   Future register(String email, String password, BuildContext context,
       String id, String name, bool isTeacher) async {
     showDialog(
@@ -82,7 +83,7 @@ class AuthService extends ChangeNotifier {
           Navigator.pop(context);
           login(email, password, context);
           UserModel newUser = UserModel(
-              classGroups: [],
+              classAndGroup: {},
               name: name,
               email: email,
               id: int.parse(id),
@@ -118,7 +119,6 @@ class AuthService extends ChangeNotifier {
                   });
             }
           } else {
-            print(e.message);
             Navigator.pop(context);
             showDialog(
                 context: context,
@@ -150,6 +150,7 @@ class AuthService extends ChangeNotifier {
     }
   }
 
+  // logout
   Future logout() async {
     await FirebaseAuth.instance.signOut();
     _login = false;
