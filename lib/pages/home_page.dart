@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
               height: 50,
               width: 400,
               child: Image.asset(
-                'logo-english-3.png',
+                "assets/logo-english-3.png",
                 fit: BoxFit.fill,
               ),
             ),
@@ -119,7 +119,7 @@ class _HomePageState extends State<HomePage> {
                 ? SizedBox(
                     height: MediaQuery.of(context).size.height,
                     child: Image.asset(
-                      'hust_background.jpg',
+                      "assets/hust_background.jpg",
                       fit: BoxFit.cover,
                     ),
                   )

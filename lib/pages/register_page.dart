@@ -42,7 +42,7 @@ class _RegisterPageState extends State<RegisterPage> {
           child: GestureDetector(
             onTap: () => Navigator.popUntil(context, ModalRoute.withName('/')),
             child: Image.asset(
-              'logo-english-3.png',
+              "assets/logo-english-3.png",
               fit: BoxFit.fill,
             ),
           ),

@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
           child: GestureDetector(
             onTap: () => Navigator.popUntil(context, ModalRoute.withName('/')),
             child: Image.asset(
-              'logo-english-3.png',
+              "assets/logo-english-3.png",
               fit: BoxFit.fill,
             ),
           ),
@@ -63,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                       height: 50,
                       width: 37,
                       child: Image.asset(
-                        '694px-Logo_Hust.png',
+                        "assets/694px-Logo_Hust.png",
                         fit: BoxFit.cover,
                       ),
                     ),
