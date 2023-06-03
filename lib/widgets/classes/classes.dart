@@ -86,7 +86,7 @@ class _ClassesState extends State<Classes> {
               ),
 
               // if the user is a teacher, appear the create new class button
-              widget.isTeacher
+              widget.isTeacher && size.width > 800
                   ? SizedBox(
                       width: size.width * 0.15,
                       height: 50,
@@ -119,7 +119,7 @@ class _ClassesState extends State<Classes> {
           // the classes table
           SingleChildScrollView(
             child: SizedBox(
-              height: size.height * 0.6,
+              height: size.height * 0.5,
               width: size.width * 0.6,
               child: StreamBuilder(
                 stream: FirebaseFirestore.instance
@@ -190,7 +190,28 @@ class _ClassesState extends State<Classes> {
                 },
               ),
             ),
-          )
+          ),
+          size.width > 800
+              ? Container()
+              : ElevatedButton.icon(
+                  style:
+                      ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return const NewClassDialog();
+                        });
+                  },
+                  icon: const Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ),
+                  label: const Text(
+                    'Create new class',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
         ],
       ),
     );

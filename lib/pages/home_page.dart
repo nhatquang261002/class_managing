@@ -33,7 +33,6 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: Theme.of(context).primaryColor,
             pinned: true,
             floating: true,
-            automaticallyImplyLeading: false,
             title: SizedBox(
               height: 50,
               width: 400,
@@ -316,6 +315,119 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
+      drawer:
+          size.width > 800 || context.watch<AuthService>().loginState == false
+              ? null
+              : Drawer(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      // The user name line
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: FutureBuilder(
+                          future: FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(FirebaseAuth.instance.currentUser!.email)
+                              .get(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                child: Text(
+                                  'Welcome',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              );
+                            }
+
+                            return Text(
+                              snapshot.data!['name'],
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 20.0),
+                            );
+                          },
+                        ),
+                      ),
+
+                      // personal info button
+                      TextButton.icon(
+                        onPressed: () {
+                          setState(() {
+                            widget.selectedWidget = 0;
+                          });
+                        },
+                        icon: const Icon(
+                          Icons.arrow_right,
+                          color: Colors.white,
+                        ),
+                        label: const Text(
+                          'Personal Information',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Container(
+                          height: 2,
+                          color: Colors.white,
+                        ),
+                      ),
+
+                      // classes button
+                      TextButton.icon(
+                        onPressed: () {
+                          setState(() {
+                            widget.selectedWidget = 1;
+                          });
+                        },
+                        icon: const Icon(
+                          Icons.arrow_right,
+                          color: Colors.white,
+                        ),
+                        label: const Text(
+                          'Classes',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Container(
+                          height: 2,
+                          color: Colors.white,
+                        ),
+                      ),
+
+                      // scoring button
+                      TextButton.icon(
+                        onPressed: () {
+                          setState(() {
+                            widget.selectedWidget = 2;
+                          });
+                        },
+                        icon: const Icon(
+                          Icons.arrow_right,
+                          color: Colors.white,
+                        ),
+                        label: const Text(
+                          'Scoring',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Container(
+                          height: 2,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
     );
   }
 }

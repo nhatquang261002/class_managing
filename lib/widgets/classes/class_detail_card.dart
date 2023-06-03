@@ -19,8 +19,8 @@ class ClassDetailCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return SizedBox(
-      height: size.height * 0.2,
-      width: size.width * 0.3,
+      height: size.height * 0.225,
+      width: size.width * 0.325,
       child: Card(
         child: Padding(
           padding: const EdgeInsets.all(8.0),

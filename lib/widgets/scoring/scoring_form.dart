@@ -21,6 +21,7 @@ class _ScoringFormState extends State<ScoringForm> {
   late List<String> studentsName = [];
   List<String> studentsEmail = [];
   List<int> _score = [];
+  String currentUserName = "";
 
   // getStudents from the group function
   void getStudents() async {
@@ -33,6 +34,17 @@ class _ScoringFormState extends State<ScoringForm> {
     final listEmail = doc.data()!['students'] as Map<String, dynamic>;
 
     for (int i = 0; i < listEmail.length; i++) {
+      if (listEmail.keys.elementAt(i) ==
+          FirebaseAuth.instance.currentUser!.email) {
+        final snap = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(listEmail.keys.elementAt(i))
+            .get();
+        setState(() {
+          currentUserName = snap.data()!['name'];
+        });
+        continue;
+      }
       final snap = await FirebaseFirestore.instance
           .collection('users')
           .doc(listEmail.keys.elementAt(i))
@@ -73,7 +85,7 @@ class _ScoringFormState extends State<ScoringForm> {
               children: [
                 Center(
                   child: Text(
-                      'Class ${widget.classID} - Group ${widget.groupName}'),
+                      'Class ${widget.classID} - Group ${widget.groupName} - Member $currentUserName'),
                 ),
 
                 studentsName.isEmpty
@@ -85,165 +97,189 @@ class _ScoringFormState extends State<ScoringForm> {
                       )
 
                     // else appear the scoring form
-                    : SingleChildScrollView(
-                        child: SizedBox(
-                          height: size.height * 0.15,
-                          width: size.width * 0.6,
-                          child: ListView.builder(
-                            itemCount: studentsName.length,
-                            itemBuilder: (context, index) {
-                              return SizedBox(
-                                height: 25,
-                                width: size.width * 0.6,
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    // group's member's name
-                                    SizedBox(
-                                      width: size.width * 0.15,
-                                      child: Center(
-                                        child: Text(studentsName[index]),
-                                      ),
-                                    ),
+                    : size.width < 800
+                        ? const Center(
+                            child: Text("Please expand your browser"),
+                          )
+                        : SingleChildScrollView(
+                            child: SizedBox(
+                              height: size.height * 0.15,
+                              width: size.width * 0.6,
+                              child: ListView.builder(
+                                itemCount: studentsName.length,
+                                itemBuilder: (context, index) {
+                                  return SizedBox(
+                                    height: 25,
+                                    width: size.width * 0.6,
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        // group's member's name
+                                        SizedBox(
+                                          width: size.width * 0.15,
+                                          child: Center(
+                                            child: Text(studentsName[index]),
+                                          ),
+                                        ),
 
-                                    // the scoring radio
-                                    SizedBox(
-                                      width: size.width * 0.4,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Flexible(
-                                            fit: FlexFit.tight,
+                                        // the scoring radio
+                                        SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: SizedBox(
+                                            width: size.width * 0.4,
                                             child: Row(
-                                              mainAxisSize: MainAxisSize.min,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
                                               children: [
-                                                const Text('1'),
-                                                const SizedBox(
-                                                  width: 5,
+                                                Flexible(
+                                                  fit: FlexFit.tight,
+                                                  child: Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      const Text('1'),
+                                                      const SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      Radio<int>(
+                                                        value: 1,
+                                                        groupValue:
+                                                            _score[index],
+                                                        onChanged: (value) {
+                                                          setState(() {
+                                                            _score[index] =
+                                                                value!;
+                                                          });
+                                                        },
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
-                                                Radio<int>(
-                                                  value: 1,
-                                                  groupValue: _score[index],
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      _score[index] = value!;
-                                                    });
-                                                  },
+                                                Flexible(
+                                                  fit: FlexFit.tight,
+                                                  child: Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      const Text('2'),
+                                                      const SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      Radio<int>(
+                                                        value: 2,
+                                                        groupValue:
+                                                            _score[index],
+                                                        onChanged: (value) {
+                                                          setState(() {
+                                                            _score[index] =
+                                                                value!;
+                                                          });
+                                                        },
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Flexible(
+                                                  fit: FlexFit.tight,
+                                                  child: Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      const Text('3'),
+                                                      const SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      Radio<int>(
+                                                        value: 3,
+                                                        groupValue:
+                                                            _score[index],
+                                                        onChanged: (value) {
+                                                          setState(() {
+                                                            _score[index] =
+                                                                value!;
+                                                          });
+                                                        },
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Flexible(
+                                                  fit: FlexFit.tight,
+                                                  child: Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      const Text('4'),
+                                                      const SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      Radio<int>(
+                                                        value: 4,
+                                                        groupValue:
+                                                            _score[index],
+                                                        onChanged: (value) {
+                                                          setState(() {
+                                                            _score[index] =
+                                                                value!;
+                                                          });
+                                                        },
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Flexible(
+                                                  fit: FlexFit.tight,
+                                                  child: Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      const Text('5'),
+                                                      const SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      Radio<int>(
+                                                        value: 5,
+                                                        groupValue:
+                                                            _score[index],
+                                                        onChanged: (value) {
+                                                          setState(() {
+                                                            _score[index] =
+                                                                value!;
+                                                          });
+                                                        },
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ],
                                             ),
                                           ),
-                                          Flexible(
-                                            fit: FlexFit.tight,
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                const Text('2'),
-                                                const SizedBox(
-                                                  width: 5,
-                                                ),
-                                                Radio<int>(
-                                                  value: 2,
-                                                  groupValue: _score[index],
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      _score[index] = value!;
-                                                    });
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Flexible(
-                                            fit: FlexFit.tight,
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                const Text('3'),
-                                                const SizedBox(
-                                                  width: 5,
-                                                ),
-                                                Radio<int>(
-                                                  value: 3,
-                                                  groupValue: _score[index],
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      _score[index] = value!;
-                                                    });
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Flexible(
-                                            fit: FlexFit.tight,
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                const Text('4'),
-                                                const SizedBox(
-                                                  width: 5,
-                                                ),
-                                                Radio<int>(
-                                                  value: 4,
-                                                  groupValue: _score[index],
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      _score[index] = value!;
-                                                    });
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Flexible(
-                                            fit: FlexFit.tight,
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                const Text('5'),
-                                                const SizedBox(
-                                                  width: 5,
-                                                ),
-                                                Radio<int>(
-                                                  value: 5,
-                                                  groupValue: _score[index],
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      _score[index] = value!;
-                                                    });
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              );
-                            },
+                                  );
+                                },
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
 
                 // submit button
-                OutlinedButton(
-                  onPressed: () {
-                    Map<String, int> scores = {};
-                    for (int i = 0; i < studentsName.length; i++) {
-                      scores[studentsEmail[i]] = _score[i];
-                    }
-                    DatabaseService().submitScore(
-                        FirebaseAuth.instance.currentUser!.email!,
-                        widget.classID,
-                        widget.groupName,
-                        scores);
-                  },
-                  child: const Text('Submit'),
-                ),
+                size.width < 800 || studentsName.isEmpty
+                    ? Container()
+                    : OutlinedButton(
+                        onPressed: () {
+                          Map<String, int> scores = {};
+                          for (int i = 0; i < studentsName.length; i++) {
+                            scores[studentsEmail[i]] = _score[i];
+                          }
+                          DatabaseService().submitScore(
+                              FirebaseAuth.instance.currentUser!.email!,
+                              widget.classID,
+                              widget.groupName,
+                              scores);
+                        },
+                        child: const Text('Submit'),
+                      ),
               ],
             ),
           ),
