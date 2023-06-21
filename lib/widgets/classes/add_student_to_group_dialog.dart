@@ -1,7 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:study_work_grading_web_based/models/user.dart';
 import 'package:study_work_grading_web_based/services/database_service.dart';
 
 class AddStudentToGroupDialog extends StatefulWidget {

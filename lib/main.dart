@@ -1,11 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:study_work_grading_web_based/pages/login_page.dart';
 import 'package:study_work_grading_web_based/pages/register_page.dart';
 import 'package:study_work_grading_web_based/services/auth_service.dart';
+
 import '../pages/home_page.dart';
 import 'widgets/firebase_options.dart';
-import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

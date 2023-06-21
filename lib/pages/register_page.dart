@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:study_work_grading_web_based/models/user.dart';
-import 'package:study_work_grading_web_based/services/database_service.dart';
 import '../services/auth_service.dart';
 
 class RegisterPage extends StatefulWidget {
