@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:study_work_grading_web_based/models/group.dart';
 import 'package:study_work_grading_web_based/models/user.dart';
+import 'package:study_work_grading_web_based/services/export_excel.dart';
 
 import '../models/class.dart';
 
@@ -462,5 +463,67 @@ class DatabaseService {
         .collection('classGroups')
         .doc(groupName)
         .update({'students': studentsScore});
+  }
+
+  // import student to class
+  Future importStudentsToClass(
+    int studentID,
+    String classID,
+  ) async {
+    var query = await FirebaseFirestore.instance
+        .collection('users')
+        .where('id', isEqualTo: studentID)
+        .get();
+
+    String studentEmail = query.docs.first.data()['email'];
+
+    // get the students list from the class
+    final checkClass = await FirebaseFirestore.instance
+        .collection('classes')
+        .doc(classID.toString())
+        .get();
+    List students = checkClass.data()!['classStudents'];
+
+    // if the class doesn't have the student with that studentID, save the student to the class table and save the class to the student table
+    if (!students.contains(studentEmail)) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(studentEmail)
+          .set({
+        'classAndGroup': {classID.toString(): {}}
+      }, SetOptions(merge: true));
+
+      await FirebaseFirestore.instance
+          .collection('classes')
+          .doc(classID.toString())
+          .update({
+        'classStudents': FieldValue.arrayUnion([studentEmail]),
+      });
+    }
+  }
+
+  // query the data and export to excel
+  Future getClassExcelFile(String classID, context) async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: Theme.of(context).primaryColor,
+            ),
+          );
+        });
+    final classSnapshot = await FirebaseFirestore.instance
+        .collection('classes')
+        .doc(classID)
+        .get();
+    Class classData = Class(
+        classSnapshot.data()!['subjectName'],
+        classSnapshot.data()!['classID'],
+        classSnapshot.data()!['classTeacherEmail'],
+        List<String>.from(classSnapshot.data()!['classStudents']));
+
+    saveExcel(classData);
+    Navigator.pop(context);
   }
 }

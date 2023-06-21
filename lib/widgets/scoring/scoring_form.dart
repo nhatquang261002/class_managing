@@ -272,11 +272,17 @@ class _ScoringFormState extends State<ScoringForm> {
                           for (int i = 0; i < studentsName.length; i++) {
                             scores[studentsEmail[i]] = _score[i];
                           }
-                          DatabaseService().submitScore(
-                              FirebaseAuth.instance.currentUser!.email!,
-                              widget.classID,
-                              widget.groupName,
-                              scores);
+                          DatabaseService()
+                              .submitScore(
+                                  FirebaseAuth.instance.currentUser!.email!,
+                                  widget.classID,
+                                  widget.groupName,
+                                  scores)
+                              .whenComplete(() => showDialog(
+                                  context: context,
+                                  builder: (context) => const AlertDialog(
+                                        content: Text('Submit successful.'),
+                                      )));
                         },
                         child: const Text('Submit'),
                       ),

@@ -1,11 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:study_work_grading_web_based/widgets/classes/group_details_dialog.dart';
 import 'package:study_work_grading_web_based/services/database_service.dart';
 import 'package:study_work_grading_web_based/widgets/classes/add_group_dialog.dart';
 import 'package:study_work_grading_web_based/widgets/classes/add_student_to_class_dialog.dart';
 import 'package:study_work_grading_web_based/widgets/classes/class_detail_card.dart';
+import 'package:study_work_grading_web_based/widgets/classes/group_details_dialog.dart';
+import 'package:study_work_grading_web_based/widgets/classes/import_dialog.dart';
 
 class ClassDetailPage extends StatefulWidget {
   final bool isCreator;
@@ -93,8 +94,11 @@ class _ClassDetailPageState extends State<ClassDetailPage> {
                       children: [
                         // students column
                         Column(
-                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            widget.isCreator
+                                ? ImportDialog(classID: widget.classID)
+                                : Container(),
                             Card(
                               child: SingleChildScrollView(
                                 child: SizedBox(
@@ -169,19 +173,24 @@ class _ClassDetailPageState extends State<ClassDetailPage> {
 
                             // if the current user is the creator, the add student to class will comes up
                             widget.isCreator
-                                ? OutlinedButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AddStudentToClassDialog(
-                                            classID: widget.classID,
+                                ? SizedBox(
+                                    width: size.width * 0.4,
+                                    child: Center(
+                                      child: OutlinedButton(
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AddStudentToClassDialog(
+                                                classID: widget.classID,
+                                              );
+                                            },
                                           );
                                         },
-                                      );
-                                    },
-                                    child: const Text(
-                                        'Add a new student to class'),
+                                        child: const Text(
+                                            'Add a new student to class'),
+                                      ),
+                                    ),
                                   )
                                 : Container(),
                           ],
@@ -194,6 +203,11 @@ class _ClassDetailPageState extends State<ClassDetailPage> {
                         Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
+                            widget.isCreator
+                                ? const SizedBox(
+                                    height: 30,
+                                  )
+                                : Container(),
                             Card(
                               child: SingleChildScrollView(
                                 child: SizedBox(

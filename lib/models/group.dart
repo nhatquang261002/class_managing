@@ -7,7 +7,7 @@ import 'package:study_work_grading_web_based/models/user.dart';
 
 class Group {
   final String groupName;
-  Map<String, bool> students;
+  Map<String, List<dynamic>> students;
 
   Group(
     this.groupName,
@@ -16,7 +16,7 @@ class Group {
 
   Group copyWith({
     String? groupName,
-    Map<String, bool>? students,
+    Map<String, List<dynamic>>? students,
   }) {
     return Group(
       groupName ?? this.groupName,
@@ -34,8 +34,8 @@ class Group {
   factory Group.fromMap(Map<String, dynamic> map) {
     return Group(
         map['groupName'] as String,
-        Map<String, bool>.from(
-          (map['students'] as Map<String, bool>),
+        Map<String, List<dynamic>>.from(
+          (map['students'] as Map<String, List<dynamic>>),
         ));
   }
 

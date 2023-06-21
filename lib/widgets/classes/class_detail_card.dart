@@ -19,7 +19,7 @@ class ClassDetailCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return SizedBox(
-      height: size.height * 0.225,
+      height: isCreator ? size.height * 0.235 : size.height * 0.15,
       width: size.width * 0.325,
       child: Card(
         child: Padding(
@@ -41,8 +41,8 @@ class ClassDetailCard extends StatelessWidget {
                 height: 10,
               ),
               Text('Number of students: $numberOfStudents'),
-              const SizedBox(
-                height: 10,
+              SizedBox(
+                height: isCreator ? size.height * 0.05 : size.height * 0.01,
               ),
 
               // if the user is the creator, appear the 'delete class' button
@@ -66,6 +66,23 @@ class ClassDetailCard extends StatelessWidget {
                       ),
                     )
                   : Container(),
+
+              // export button
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                      onPressed: () {
+                        DatabaseService()
+                            .getClassExcelFile(classID.toString(), context);
+                      },
+                      child: Text(
+                        "Export Class_$classID to xlsx",
+                        style: const TextStyle(fontSize: 10.0),
+                      )),
+                ],
+              ),
             ],
           ),
         ),

@@ -1,3 +1,6 @@
+import 'dart:html';
+import 'dart:js_interop';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -23,22 +26,21 @@ class AuthService extends ChangeNotifier {
     try {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      _login = true;
-      notifyListeners();
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
+      final code = parseFirebaseAuthExceptionMessage(input: e.message);
+      if (code == 'user-not-found') {
         Navigator.pop(context);
         showDialog(
             context: context,
             builder: (context) {
               return const AlertDialog(
                 title: Text(
-                  'Email is incorrect or doesn\'t exist',
+                  "Email is incorrect or doesn't exist",
                   style: TextStyle(fontSize: 16.0),
                 ),
               );
             });
-      } else if (e.code == 'wrong-password') {
+      } else if (code == 'wrong-password') {
         Navigator.pop(context);
         showDialog(
             context: context,
@@ -52,11 +54,86 @@ class AuthService extends ChangeNotifier {
             });
       }
     }
-    FirebaseAuth.instance.authStateChanges().listen((event) async {
-      if (event != null) {
-        Navigator.popUntil(context, ModalRoute.withName('/'));
+    if (FirebaseAuth.instance.currentUser!.emailVerified) {
+      FirebaseAuth.instance.authStateChanges().listen((event) async {
+        _login = true;
+        notifyListeners();
+        if (event != null) {
+          Navigator.popUntil(context, ModalRoute.withName('/'));
+        }
+      });
+    } else if (!FirebaseAuth.instance.currentUser!.emailVerified) {
+      if (context.mounted) {
+        Navigator.pop(context);
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: Column(mainAxisSize: MainAxisSize.min, children: [
+                  const Text(
+                      "This email is not verified, please check your email for verification."),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                          onPressed: () async {
+                            UserCredential user = await FirebaseAuth.instance
+                                .signInWithEmailAndPassword(
+                                    email: email, password: password);
+
+                            user.user!.sendEmailVerification();
+                            if (context.mounted) {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return const AlertDialog(
+                                      title: Text(
+                                        'Email verification sent.',
+                                        style: TextStyle(fontSize: 16.0),
+                                      ),
+                                    );
+                                  });
+                            }
+                          },
+                          child: const Text("Resend email.")),
+                      TextButton(
+                          onPressed: () async {
+                            UserCredential user = await FirebaseAuth.instance
+                                .signInWithEmailAndPassword(
+                                    email: email, password: password);
+                            FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(email)
+                                .delete();
+                            user.user!.delete();
+                            Navigator.pushNamed(context, '/register');
+                          },
+                          child: const Text("Register again.")),
+                    ],
+                  )
+                ]),
+              );
+            });
       }
-    });
+      logout();
+    }
+  }
+
+  String parseFirebaseAuthExceptionMessage(
+      {String plugin = "auth", required String? input}) {
+    if (input == null) {
+      return "unknown";
+    }
+
+    // https://regexr.com/7en3h
+    String regexPattern = r'(?<=\(' + plugin + r'/)(.*?)(?=\)\.)';
+    RegExp regExp = RegExp(regexPattern);
+    Match? match = regExp.firstMatch(input);
+    if (match != null) {
+      return match.group(0)!;
+    }
+
+    return "unknown";
   }
 
   // register
@@ -76,12 +153,26 @@ class AuthService extends ChangeNotifier {
     if (!check.exists) {
       if (context.mounted) {
         try {
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: email,
-            password: password,
-          );
-          Navigator.pop(context);
-          login(email, password, context);
+          UserCredential user = await FirebaseAuth.instance
+              .createUserWithEmailAndPassword(email: email, password: password);
+
+          user.user!.sendEmailVerification().then((value) {
+            Navigator.pop(context);
+            showDialog(
+              context: context,
+              builder: (context) => const AlertDialog(
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                        'Email verification sent.\nPlease check your email for signing up completion.'),
+                  ],
+                ),
+              ),
+            );
+          });
+
           UserModel newUser = UserModel(
               classAndGroup: {},
               name: name,
@@ -90,7 +181,8 @@ class AuthService extends ChangeNotifier {
               isTeacher: isTeacher);
           DatabaseService().saveUser(newUser);
         } on FirebaseAuthException catch (e) {
-          if (e.code == 'weak-password') {
+          var code = parseFirebaseAuthExceptionMessage(input: e.code);
+          if (code == 'weak-password') {
             if (context.mounted) {
               Navigator.pop(context);
               showDialog(
@@ -104,7 +196,7 @@ class AuthService extends ChangeNotifier {
                     );
                   });
             }
-          } else if (e.code == 'email-already-in-use') {
+          } else {
             if (context.mounted) {
               Navigator.pop(context);
               showDialog(
@@ -118,18 +210,6 @@ class AuthService extends ChangeNotifier {
                     );
                   });
             }
-          } else {
-            Navigator.pop(context);
-            showDialog(
-                context: context,
-                builder: (context) {
-                  return const AlertDialog(
-                    title: Text(
-                      'Unexpected Error.',
-                      style: TextStyle(fontSize: 16.0),
-                    ),
-                  );
-                });
           }
         }
       }

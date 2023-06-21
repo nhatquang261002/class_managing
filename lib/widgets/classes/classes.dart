@@ -92,7 +92,8 @@ class _ClassesState extends State<Classes> {
                       height: 50,
                       child: ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green),
+                              backgroundColor:
+                                  const Color.fromARGB(192, 170, 17, 6)),
                           onPressed: () {
                             showDialog(
                                 context: context,

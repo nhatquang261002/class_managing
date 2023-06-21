@@ -18,11 +18,12 @@ class GroupDetailsDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     // dialog
     return AlertDialog(
         content: SizedBox(
-      height: 250,
-      width: 300,
+      height: size.height * 0.5,
+      width: size.width * 0.5,
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: StreamBuilder(
@@ -61,8 +62,8 @@ class GroupDetailsDialog extends StatelessWidget {
                     height: 10,
                   ),
                   SizedBox(
-                    height: 125,
-                    width: 300,
+                    height: size.height * 0.325,
+                    width: size.width * 0.48,
 
                     // students info list
                     child: SingleChildScrollView(
