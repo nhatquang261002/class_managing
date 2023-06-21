@@ -75,7 +75,7 @@ class _ScoringFormState extends State<ScoringForm> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
-        height: size.height * 0.275,
+        height: 275,
         width: size.width * 0.6,
         child: Card(
           child: Padding(

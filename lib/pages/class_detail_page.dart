@@ -54,11 +54,10 @@ class _ClassDetailPageState extends State<ClassDetailPage> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(25.0),
-        child: SizedBox(
-          height: size.height * 0.9,
-          width: size.width * 0.9,
+      body: SizedBox(
+        height: size.height * 0.9,
+        width: size.width * 1,
+        child: SingleChildScrollView(
           child: StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection('classes')

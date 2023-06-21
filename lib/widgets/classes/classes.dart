@@ -45,8 +45,7 @@ class _ClassesState extends State<Classes> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Padding(
-      padding: const EdgeInsets.all(25.0),
+    return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -195,8 +194,8 @@ class _ClassesState extends State<Classes> {
           size.width > 800
               ? Container()
               : ElevatedButton.icon(
-                  style:
-                      ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(192, 170, 17, 6)),
                   onPressed: () {
                     showDialog(
                         context: context,

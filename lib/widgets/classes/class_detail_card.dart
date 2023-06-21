@@ -19,8 +19,8 @@ class ClassDetailCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return SizedBox(
-      height: isCreator ? size.height * 0.235 : size.height * 0.15,
-      width: size.width * 0.325,
+      height: isCreator ? 200 : 150,
+      width: 500,
       child: Card(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -42,7 +42,7 @@ class ClassDetailCard extends StatelessWidget {
               ),
               Text('Number of students: $numberOfStudents'),
               SizedBox(
-                height: isCreator ? size.height * 0.05 : size.height * 0.01,
+                height: isCreator ? size.height * 0.02 : size.height * 0.01,
               ),
 
               // if the user is the creator, appear the 'delete class' button

@@ -2,8 +2,6 @@
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
-import 'package:study_work_grading_web_based/models/class.dart';
-import 'package:study_work_grading_web_based/models/user.dart';
 
 class Group {
   final String groupName;

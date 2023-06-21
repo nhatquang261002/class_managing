@@ -2,7 +2,6 @@
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
-import 'package:study_work_grading_web_based/models/group.dart';
 
 class Class {
   final String subjectName;
