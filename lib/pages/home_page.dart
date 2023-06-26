@@ -42,12 +42,12 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             actions: [
-              // if loginState = true => LoginButton, else is Welcome 'User' + LogOutButton
+              // if loginState = false => LoginButton, else is Welcome 'User' + LogOutButton
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: context.watch<AuthService>().loginState == false
 
-                    // Login State == true
+                    // Login State == false
                     ? OutlinedButton.icon(
                         onPressed: () {
                           Navigator.pushNamed(context, '/login');
@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> {
                           style: TextStyle(color: Colors.white),
                         ))
 
-                    // LoginState == false
+                    // LoginState == true
                     : Row(children: [
                         // Fetch user name for the Welcome 'User'
                         FutureBuilder(
@@ -95,6 +95,8 @@ class _HomePageState extends State<HomePage> {
                         OutlinedButton.icon(
                             onPressed: () {
                               context.read<AuthService>().logout();
+                              Navigator.popUntil(
+                                  context, ModalRoute.withName('/'));
                             },
                             icon: const Icon(
                               Icons.exit_to_app,

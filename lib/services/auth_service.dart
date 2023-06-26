@@ -52,13 +52,12 @@ class AuthService extends ChangeNotifier {
       }
     }
     if (FirebaseAuth.instance.currentUser!.emailVerified) {
-      FirebaseAuth.instance.authStateChanges().listen((event) async {
-        _login = true;
-        notifyListeners();
-        if (event != null) {
-          Navigator.popUntil(context, ModalRoute.withName('/'));
-        }
-      });
+      _login = true;
+      notifyListeners();
+
+      if (context.mounted) {
+        Navigator.popUntil(context, ModalRoute.withName('/'));
+      }
     } else if (!FirebaseAuth.instance.currentUser!.emailVerified) {
       if (context.mounted) {
         Navigator.pop(context);
@@ -112,7 +111,9 @@ class AuthService extends ChangeNotifier {
               );
             });
       }
-      logout();
+      if (context.mounted) {
+        logout();
+      }
     }
   }
 
