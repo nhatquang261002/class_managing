@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:study_work_grading_web_based/models/group.dart';
-import 'package:study_work_grading_web_based/models/user.dart';
-import 'package:study_work_grading_web_based/services/export_excel.dart';
+import '../models/group.dart';
+import '../models/user.dart';
+import '../services/export_excel.dart';
 
 import '../models/class.dart';
 

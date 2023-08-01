@@ -1,7 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:study_work_grading_web_based/services/database_service.dart';
+import '../services/database_service.dart';
 
 import '../models/user.dart';
 
@@ -76,7 +76,6 @@ class AuthService extends ChangeNotifier {
                             UserCredential user = await FirebaseAuth.instance
                                 .signInWithEmailAndPassword(
                                     email: email, password: password);
-
                             user.user!.sendEmailVerification();
                             if (context.mounted) {
                               showDialog(

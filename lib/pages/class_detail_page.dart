@@ -1,12 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:study_work_grading_web_based/services/database_service.dart';
-import 'package:study_work_grading_web_based/widgets/classes/add_group_dialog.dart';
-import 'package:study_work_grading_web_based/widgets/classes/add_student_to_class_dialog.dart';
-import 'package:study_work_grading_web_based/widgets/classes/class_detail_card.dart';
-import 'package:study_work_grading_web_based/widgets/classes/group_details_dialog.dart';
-import 'package:study_work_grading_web_based/widgets/classes/import_dialog.dart';
+import '/services/database_service.dart';
+import '../widgets/classes/add_group_dialog.dart';
+import '../widgets/classes/add_student_to_class_dialog.dart';
+import '../widgets/classes/class_detail_card.dart';
+import '../widgets/classes/group_details_dialog.dart';
+import '../widgets/classes/import_dialog.dart';
 
 class ClassDetailPage extends StatefulWidget {
   final bool isCreator;

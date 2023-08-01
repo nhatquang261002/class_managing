@@ -1,7 +1,7 @@
 import 'package:excel/excel.dart';
-import 'package:study_work_grading_web_based/models/class.dart';
+import '../models/class.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:study_work_grading_web_based/models/group.dart';
+import '../models/group.dart';
 
 void saveExcel(Class desiredClass) async {
   var excel = Excel.createExcel();
